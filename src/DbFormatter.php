@@ -15,15 +15,9 @@ use Monolog\Formatter\LineFormatter;
  */
 class DbFormatter extends LineFormatter
 {
-    /**
-     * @const string
-     */
-    const FORMAT_DEFAULT = "%message% %context% %extra%";
+    public const FORMAT_DEFAULT = "%message% %context% %extra%";
 
-    /**
-     * @const int
-     */
-    const MAX_LENGTH_DEFAULT = 65535;
+    public const MAX_LENGTH_DEFAULT = 65535;
 
     /**
      * @var int
