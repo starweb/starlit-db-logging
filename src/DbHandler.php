@@ -44,7 +44,7 @@ class DbHandler extends AbstractProcessingHandler
     protected $table;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $additionalFields;
 
@@ -68,18 +68,18 @@ class DbHandler extends AbstractProcessingHandler
     /**
      * @param Db        $db
      * @param int       $maxEntries
-     * @param array     $additionalFields
+     * @param string[]  $additionalFields
      * @param int       $level
      * @param bool      $bubble
      * @param string    $table
      */
     public function __construct(
         Db $db,
-        $maxEntries = null,
+        int $maxEntries = null,
         array $additionalFields = [],
-        $level = Logger::DEBUG,
-        $bubble = true,
-        $table = 'log'
+        int $level = Logger::DEBUG,
+        bool $bubble = true,
+        string $table = 'log'
     ) {
         parent::__construct($level, $bubble);
 
@@ -92,7 +92,7 @@ class DbHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function processRecord(array $record)
+    protected function processRecord(array $record): array
     {
         $record = parent::processRecord($record);
 
@@ -112,7 +112,7 @@ class DbHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $dbData = [
             'channel' => $record['channel'],
@@ -125,10 +125,7 @@ class DbHandler extends AbstractProcessingHandler
         $this->clean($record['channel']);
     }
 
-    /**
-     * @param string $channel
-     */
-    protected function clean($channel)
+    protected function clean(string $channel): void
     {
         if ($this->maxEntries && mt_rand(1, $this->cleanDivisor) <= $this->cleanProbability) {
             $currentCount = $this->getChannelEntriesCount($channel);
@@ -139,13 +136,9 @@ class DbHandler extends AbstractProcessingHandler
         }
     }
 
-    /**
-     * @param string $channel
-     * @return int
-     */
-    protected function getChannelEntriesCount($channel)
+    protected function getChannelEntriesCount(string $channel): int
     {
-        return $this->db->fetchValue(
+        return (int) $this->db->fetchValue(
             'SELECT COUNT(*) FROM `' . $this->table . '` WHERE `channel` = ?',
             [$channel]
         );
@@ -155,22 +148,19 @@ class DbHandler extends AbstractProcessingHandler
      * @param $channel
      * @param $entriesToDelete
      */
-    protected function deleteXOldestChannelEntries($channel, $entriesToDelete)
+    protected function deleteXOldestChannelEntries(string $channel, int $entriesToDelete): void
     {
         $this->db->exec(
             sprintf(
                 'DELETE FROM `%s` WHERE `channel` = ?  ORDER BY `time` ASC LIMIT %d',
                 $this->table,
-                (int) $entriesToDelete
+                $entriesToDelete
             ),
             [$channel]
         );
     }
 
-    /**
-     * @param Logger $logger
-     */
-    public function clear(Logger $logger)
+    public function clear(Logger $logger): void
     {
         $this->db->exec(sprintf('DELETE FROM `%s` WHERE `channel` = ?', $this->table), [$logger->getName()]);
     }
@@ -178,16 +168,15 @@ class DbHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): DbFormatter
     {
         return new DbFormatter();
     }
 
     /**
      * @see setCleanProbability()
-     * @param int $cleanDivisor
      */
-    public function setCleanDivisor($cleanDivisor)
+    public function setCleanDivisor(int $cleanDivisor): void
     {
         $this->cleanDivisor = $cleanDivisor;
     }
@@ -198,10 +187,8 @@ class DbHandler extends AbstractProcessingHandler
      * The clean probability together with clean divisor is used to calculate the probability.
      * With a clean probability of 1 and a divisor of 100, there's a 1% chance (1/100) the table
      * will be cleaned.
-     *
-     * @param int $cleanProbability
      */
-    public function setCleanProbability($cleanProbability)
+    public function setCleanProbability(int $cleanProbability): void
     {
         $this->cleanProbability = $cleanProbability;
     }
