@@ -24,17 +24,11 @@ class DbFormatter extends LineFormatter
      */
     protected $maxLength;
 
-    /**
-     * @param string|null $format
-     * @param bool        $allowInlineLineBreaks
-     * @param bool        $ignoreEmptyContextAndExtra
-     * @param int         $maxLength
-     */
     public function __construct(
-        $format = null,
-        $allowInlineLineBreaks = true,
-        $ignoreEmptyContextAndExtra = true,
-        $maxLength = self::MAX_LENGTH_DEFAULT
+        string $format = null,
+        bool $allowInlineLineBreaks = true,
+        bool $ignoreEmptyContextAndExtra = true,
+        int $maxLength = self::MAX_LENGTH_DEFAULT
     ) {
         parent::__construct(
             $format ?: static::FORMAT_DEFAULT,
