@@ -144,10 +144,6 @@ class DbHandler extends AbstractProcessingHandler
         );
     }
 
-    /**
-     * @param $channel
-     * @param $entriesToDelete
-     */
     protected function deleteXOldestChannelEntries(string $channel, int $entriesToDelete): void
     {
         $this->db->exec(
