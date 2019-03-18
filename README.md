@@ -1,16 +1,14 @@
-# Starlit Db
+# Starlit Db Logging
 
-    [![Build Status](https://travis-ci.org/starweb/starlit-db-migration.svg?branch=master)](https://travis-ci.org/starweb/starlit-db-migration)
-[![Code Coverage](https://scrutinizer-ci.com/g/starweb/starlit-db-migration/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/starweb/starlit-db-migration/?branch=master)
+[![Build Status](https://travis-ci.org/starweb/starlit-db-logging.svg?branch=master)](https://travis-ci.org/starweb/starlit-db-logging)
+[![Code Coverage](https://scrutinizer-ci.com/g/starweb/starlit-db-logging/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/starweb/starlit-db-logging/?branch=master)
 
-Migration library for the lightweight database/PDO abstraction layer `starlit/db`.
-
-Currently only tested with MySQL.
+Adds logging for the starlit/db package by providing a database monolog handler
 
 ## Installation
 Add the package as a requirement to your `composer.json`:
 ```bash
-$ composer require starlit/db-migration
+$ composer require starlit/db-logging
 ```
 
 ## Requirements
